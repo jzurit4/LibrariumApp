@@ -9,7 +9,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  username: string = '';
+  email: string = '';
   password: string = '';
   errorMessage: string = '';
   
@@ -19,11 +19,13 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    if (this.authService.login({ username: this.username, password: this.password })) {
-      this.router.navigate(['/tab-inicial/inicio']);
-    } else {
-      this.errorMessage = 'Credenciales incorrectas';
-    }
+    this.authService.login(this.email, this.password)
+      .then(() => {
+        this.router.navigateByUrl('/tab-inicial/inicio'); // Redirigir al home después de loguearse
+      })
+      .catch(error => {
+        console.error("Error en login", error);
+      });
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', msg:string, duration?:number) {

@@ -33,15 +33,10 @@ export class InicioPage implements OnInit {
     private searchService: SearchService, private network: Network
   ) {
     this.online$ = this.network.onlineChanges;
-    this.loggedInUser = this.authService.getLoggedInUser();
-    if (!this.loggedInUser.username) {
-      this.router.navigate(['/login']);
-    }
   }
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
 
   ngOnInit() {  

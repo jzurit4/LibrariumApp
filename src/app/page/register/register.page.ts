@@ -8,18 +8,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  username: string = '';
+  email: string = '';
   password: string = '';
   errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) { }
 
   register() {
-    if (this.authService.register({ username: this.username, password: this.password })) {
-      this.router.navigate(['/tab-inicial/inicio']);
-    } else {
-      this.errorMessage = 'El usuario ya está registrado';
-    }
+    this.authService.register(this.email, this.password)
+      .then(() => {
+        this.router.navigateByUrl('/tab-inicial/inicio'); // Redirigir al home después de registrarse
+      })
+      .catch(error => {
+        console.error("Error en registro", error);
+      });
   }
 
 

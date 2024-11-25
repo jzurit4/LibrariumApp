@@ -1,46 +1,65 @@
 import { Injectable } from '@angular/core';
-
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  constructor(private afAuth: AngularFireAuth, private router: Router) {
+    this.afAuth.setPersistence('local');
+  }
 
-  register(user: { username: string, password: string }): boolean {
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    
-    
-    const userExists = users.find((u: any) => u.username === user.username);
-    if (userExists) {
-      return false; 
+  // Registro de usuario
+  async register(email: string, password: string): Promise<any> {
+    try {
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      console.log("Usuario registrado", userCredential);
+      return userCredential;
+    } catch (error) {
+      console.error("Error en registro", error);
+      throw error;
     }
-
-    users.push(user);
-    localStorage.setItem('users', JSON.stringify(users));
-    return true; 
   }
 
-  
-  login(user: { username: string, password: string }): boolean {
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    const validUser = users.find((u: any) => u.username === user.username && u.password === user.password);
-    
-    if (validUser) {
-      localStorage.setItem('loggedInUser', JSON.stringify(validUser));
-      return true; 
+  // Login de usuario
+  async login(email: string, password: string): Promise<any> {
+    try {
+      const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
+      console.log("Usuario logueado", userCredential);
+      return userCredential;
+    } catch (error) {
+      console.error("Error en login", error);
+      throw error;
     }
-    return false; 
   }
 
-
-  getLoggedInUser(): any {
-    return JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+  // Cerrar sesión
+  async logout(): Promise<void> {
+    try {
+      await this.afAuth.signOut();
+      console.log("Sesión cerrada");
+      this.router.navigateByUrl('/login'); // Redirigir al login
+    } catch (error) {
+      console.error("Error en logout", error);
+      throw error;
+    }
   }
 
+  async sendPasswordResetEmail(email: string): Promise<void> {
+    try {
+      await this.afAuth.sendPasswordResetEmail(email);
+      console.log('Correo de recuperación enviado a', email);
+    } catch (error) {
+      console.error('Error al enviar el correo de recuperación', error);
+      throw error; // Aquí puedes manejar el error y mostrar un mensaje adecuado
+    }
+  }
 
-  logout(): void {
-    localStorage.removeItem('loggedInUser');
+  // Verificar si el usuario está logueado
+  getUser(): Observable<any> {
+    return this.afAuth.authState; // Devuelve el estado de autenticación
   }
 }

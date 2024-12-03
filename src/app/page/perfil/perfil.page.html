@@ -26,10 +26,11 @@
         <ion-item>
           <ion-label>Email: {{ email }}</ion-label>
         </ion-item>
+        <ion-button id="button" color="primary"  shape="round" expand="block" (click)="changeEmail(email)">Cambiar Correo</ion-button>
         <ion-item>
-          <ion-button expand="full" (click)="changeEmail(email)">Cambiar Correo</ion-button>
-          <ion-button expand="full" (click)="changePassword(password)">Cambiar Contraseña</ion-button>
+          <ion-label>Contraseña {{ password }}</ion-label>
         </ion-item>
+        <ion-button id="button" color="primary"  shape="round" expand="block" (click)="changePassword(password)">Cambiar Contraseña</ion-button>
       </ion-list>
     </ion-card-content>
   </ion-card>

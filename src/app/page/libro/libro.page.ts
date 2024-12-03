@@ -3,7 +3,7 @@ import { BooksService } from '../../services/books/books.service';
 import { BookVolume } from '../../models/book.model';
 import { Network } from '@ngx-pwa/offline';
 import { Observable } from 'rxjs';
-import { Share, ShareOptions } from '@capacitor/share';
+
 
 @Component({
   selector: 'app-libro',
@@ -23,14 +23,6 @@ export class LibroPage implements OnInit {
     this.isLoading = true;
   }
 
-  share(){
-    let options:ShareOptions={
-      title: 'See cool stuff',
-      text: 'Really awesome thing you need to see right meow',
-      url: 'http://ionicframework.com/'
-    }
-    Share.share(options);
-  }
 
   async ionViewWillEnter() {
     await this.booksService.configurePreferences('library');

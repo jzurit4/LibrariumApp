@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-perfil',
@@ -14,6 +14,7 @@ export class PerfilPage implements OnInit {
   user: any = null;
   email: string = '';
   password: string = '';
+  profileImage: string | undefined;
 
   constructor(private authService: AuthService, private afAuth: AngularFireAuth,
     private firestore: AngularFirestore, private router: Router) {}
@@ -32,6 +33,7 @@ export class PerfilPage implements OnInit {
       }
     });
   }
+
 
   changeEmail(newEmail: string) {
     const user = this.afAuth.currentUser;

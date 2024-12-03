@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BooksService } from 'src/app/services/books/books.service';
 import { BookVolume } from 'src/app/models/book.model';
+import { Share, ShareOptions } from '@capacitor/share';
 
 import ISO6391 from "iso-639-1";
 
@@ -55,6 +56,22 @@ export class DetailPage implements OnInit {
       this.isLoading = false;
     });
   }
+
+  
+
+  async basicshare(){
+    const description = this.book.volumeInfo?.description || 'Descripción no disponible.';
+    const title = this.book.volumeInfo?.title || 'Título no disponible'; // Título del libro
+    const url = this.book.volumeInfo?.infoLink || ''; // Enlace del libro, si está disponible
+
+    await Share.share({
+      title: title,  // Título del libro
+      text: `${title} - ${description}`,  // Título y descripción del libro
+      url: url,  // URL del libro (opcional)
+      dialogTitle: 'Compartir libro',  // Título del diálogo de compartir
+    });
+  }
+
 
   async ionViewDidEnter() {
     this.isSaved = await this.booksService.isBookStored(this.bookId);

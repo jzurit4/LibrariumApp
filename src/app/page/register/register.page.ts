@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ export class RegisterPage implements OnInit {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, public toastController:ToastController ,private router: Router) { }
 
   register() {
     this.authService.register(this.email, this.password)
@@ -21,9 +22,19 @@ export class RegisterPage implements OnInit {
       })
       .catch(error => {
         console.error("Error en registro", error);
+        this.presentToast("middle","Ocurrio un error, re-ingrese sus credenciales.",5000);
       });
   }
 
+  async presentToast(position: 'top' | 'middle' | 'bottom', msg:string, duration?:number) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: duration?duration:2500,
+      position: position,
+    });
+
+    await toast.present();
+  }
 
   ngOnInit() {
   }

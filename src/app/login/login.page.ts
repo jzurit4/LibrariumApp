@@ -22,9 +22,11 @@ export class LoginPage implements OnInit {
     this.authService.login(this.email, this.password)
       .then(() => {
         this.router.navigateByUrl('/tab-inicial/inicio'); // Redirigir al home después de loguearse
+        this.presentToast("top","Bienvenid@");
       })
       .catch(error => {
         console.error("Error en login", error);
+        this.presentToast("middle","Error",5000);
       });
   }
 

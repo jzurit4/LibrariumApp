@@ -10,10 +10,11 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot({mode: 'md'}), AppRoutingModule,AngularFireModule.initializeApp(environment.firebaseConfig),AngularFireAuthModule,IonicStorageModule.forRoot(), HttpClientModule, ServiceWorkerModule.register('ngsw-worker.js',{
+  imports: [BrowserModule, ReactiveFormsModule, IonicModule.forRoot({mode: 'md'}), AppRoutingModule,AngularFireModule.initializeApp(environment.firebaseConfig),AngularFireAuthModule,IonicStorageModule.forRoot(), HttpClientModule, ServiceWorkerModule.register('ngsw-worker.js',{
     enabled: !isDevMode(),
     // Register the ServiceWorker as soon as the application is stable
     // or after 30 seconds (whichever comes first).
